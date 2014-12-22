@@ -1,0 +1,10 @@
+<apex:page standardController="Account" showHeader="false" sidebar="false" showChat="false" docType="html-5.0">
+    <c:FilteredRelatedList parentSObjectId="{!Account.Id}"
+                           childSObjectName="{!$ObjectType.Contact.Name}"
+                           parentSobjectLookup="{!$ObjectType.Contact.fields.AccountId.Name}"
+                           theFieldSetName="Test_Field_Set"
+                           recordViewUrl="/"
+                           title="Filtered Contacts"
+                           filter=" Id != NULL"
+                           />
+</apex:page>

@@ -1,0 +1,47 @@
+<apex:page controller="AccountInstantSearchController">
+    <div ng-app="accountSearch">
+        <div ng-controller='AccountSearchController' id='controllerElement'>
+            Search: <input type="text" id="searchInput" ng-model="searchText" ng-keyup="getAccounts()"/> <button id="searchButton" ng-click="getAccounts()">Search</button> <button id="clearResults" ng-click="clearResults()">Clear</button>
+            <br />
+            <h3>Account List</h3>
+            <ul>
+                <li data-ng-repeat="account in accounts">
+                    <a href="/{{ account.id }}"> {{ account.name }} </a>
+                </li>
+            </ul>
+        </div>
+        <select class="chosen-select"/>
+    </div>
+    <apex:includeScript value="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"/>
+    <script>
+        (function(angular){
+            'use strict';
+            var accountSearch = angular.module('accountSearch', []);
+            accountSearch.controller('AccountSearchController', function ($scope) {
+                $scope.getAccounts = function () {
+                    if( !$scope.searchText || $scope.searchText.length < 3 ){
+                        $scope.clearResults();
+                        return;
+                    }
+                    Visualforce.remoting.Manager.invokeAction(
+                        '{!$RemoteAction.AccountInstantSearchController.getAccounts}',
+                        $scope.searchText,
+                        function( response, event ){
+                            if( event.status ) {
+                                $scope.accounts = [];
+                                for( var i = 0; i < response.length; i++ )
+                                {
+                                    $scope.accounts.push( { name: response[i].Name, id:response[i].Id });
+                                }
+                                $scope.$apply();
+                            }
+                         }
+                    );
+                };
+                $scope.clearResults = function () {
+                    $scope.accounts = [];
+                }
+            });
+        }(angular));
+    </script>
+</apex:page>

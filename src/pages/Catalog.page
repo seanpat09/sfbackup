@@ -1,0 +1,18 @@
+<apex:page standardStylesheets="false" showHeader="false" sidebar="false" standardController="Merchandise__c" recordSetVar="products">
+<apex:stylesheet value="{!URLFOR($Resource.styles, 'styles.css')}" />
+<h1>Merchandise Catalog</h1>
+<apex:dataTable value="{!products}" var="pitem" rowClasses="odd,even">
+  <apex:column headerValue="Name">
+    <apex:outputText value="{!pitem.Name}" />
+  </apex:column>
+  <apex:column headerValue="Inventory">
+    <apex:outputText value="{!pitem.Total_Inventory__c}" />
+  </apex:column>
+  <apex:column headerValue="Description">
+    <apex:outputField value="{!pitem.Description__c}"/>
+  </apex:column>
+  <apex:column headerValue="Price">
+    <apex:outputField value="{!pitem.Price__c}"/>
+  </apex:column>
+</apex:dataTable>
+</apex:page>

@@ -1,0 +1,44 @@
+<apex:component controller="FilteredRelatedListController">
+    <apex:attribute name="parentSObjectId" description="Id of the parent object" type="Id" assignTo="{!sObjectId}" required="true"/>
+    <apex:attribute name="childSObjectName" description="API name of the child sObject" type="String" assignTo="{!sObjectName}" required="true"/>
+    <apex:attribute name="parentSobjectLookup" description="API name of the parent sObject lookup field" type="String" assignTo="{!sObjectLookup}" required="true"/>
+    <apex:attribute name="theFieldSetName" description="API name of the field set" type="String" assignTo="{!fieldSetName}" required="true"/>
+    <apex:attribute name="recordViewUrl" description="The child sObject type" type="String" required="true"/>
+    <apex:attribute name="title" description="Title of the related list page block" type="String" required="true"/>
+    <apex:attribute name="filter" description="String to add to the SOQL WHERE clause" type="String" assignTo="{!filterString}" required="false"/>
+    <style>
+        .sObjectTable{ overflow: auto; height: 115px; }
+        .showMore{ padding: 9px 0 2px 5px; }
+    </style>
+    <apex:pageMessages />
+    <apex:pageBlock title="{!title}">
+        <apex:outputText value="No records to display" rendered="{!sObjects.size == 0}" />
+        <apex:outputPanel layout="block" styleClass="sObjectTable" rendered="{!sObjects.size > 0}">
+            <apex:pageBlockTable value="{!sObjects}" var="sObject">
+                <apex:repeat value="{!fieldSet.fields}" var="field">
+                    <apex:column >
+                        <apex:facet name="header">{!field.label}</apex:facet>
+                        <apex:outputField styleClass="fieldSetField" value="{!sObject[field]}" rendered="{!NOT(field.fieldPath == 'Name')}" />
+                        <apex:outputLink value="{!recordViewUrl}?id=sObject.Id" rendered="{!field.fieldPath == 'Name'}">{!sObject['Name']}</apex:outputLink>
+                    </apex:column>
+                </apex:repeat>
+            </apex:pageBlockTable>
+        </apex:outputPanel>
+        <apex:outputPanel layout="block" styleClass="showMore" rendered="{!sObjects.size > 4}">
+            <apex:outputLink value="{!recordViewUrl}" target="_parent" >
+                <apex:outputText value="Go to list ({0}) »">
+                    <apex:param value="{!sObjects.size}"/>
+                </apex:outputText>
+            </apex:outputLink>
+        </apex:outputPanel>
+    </apex:pageBlock>
+    <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" />
+    <script>
+    (function($){
+        'use strict';
+        $(document).ready( function(){
+            $('a').attr('target', '_parent');
+        });
+    }(jQuery));
+    </script>
+</apex:component>
