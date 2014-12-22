@@ -1,5 +1,4 @@
 ant retrieve
 git add .
-timestamp= date
-git commit -m "my backup at $timestamp"
+git commit -m "daily backup"
 git push origin master

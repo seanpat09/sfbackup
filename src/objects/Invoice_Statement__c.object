@@ -63,6 +63,16 @@
         <type>TextArea</type>
     </fields>
     <fields>
+        <fullName>Git_Test__c</fullName>
+        <externalId>false</externalId>
+        <label>Git Test</label>
+        <length>18</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Invoice_Value__c</fullName>
         <externalId>false</externalId>
         <label>Invoice Value</label>
